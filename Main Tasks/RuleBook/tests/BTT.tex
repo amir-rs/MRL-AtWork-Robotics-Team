@@ -1,0 +1,26 @@
+% !TEX root = ../Rulebook.tex
+
+\section{Basic Transportation Test}
+\label{sec:Basic Transportation Test}
+
+The \iaterm{Basic Transportation Test}{BTT} targets both navigation and manipulation, aswell as logistical optimization. Objects are initially placed on randomly selected service areas and must be transported to their specific target location.
+As their total number now exceeds the inventory size, robots will have to manage their inventory content and optimize their payload. The object pool consists of the complete Basic Object Set.
+
+There are currently two versions of the BTT. 
+They gradually introduce more elements of the league to the competition, including the randomness of the used objects, the increase of active Service Areas and them not being next to each other anymore, using different table heights and the placement of physical obstacles.
+The following paragraphs summarize the two different levels but DO NOT override the test specification in table \ref{fig:test_specifications_instance}.
+
+\paragraph{BTT1}
+\begin{itemize}
+\item Four randomly selected objects have to be transported.
+\item There will be three active service areas and they are not next to each other.
+\item Only tables with a height of 10cm are used. 
+\end{itemize}
+
+\paragraph{BTT2}
+\begin{itemize}
+\item Five randomly selected objects have to be transported.
+\item Two randomly selected decoy objects are placed onto one or more randomly selected service areas.
+\item There will be four active service areas with each covering one of the four table heights (0, 5, 10, 15 $\si{\centi\meter}$).
+\item Physical Obstacles are placed inside the arena (one blocking, one semi-blocking).
+\end{itemize}

@@ -1,0 +1,25 @@
+fig = plt.figure(figsize=(14, 6))
+#axes= []
+#for i, img in zip([ x for x in range(0, len(images))], images):
+#    tmp = fig.add_subplot(1, 4, i+1)
+#    tmp.set_title(img["title"])
+#    plt.plot(14,6)
+#    plt.imshow(img["image"])
+#fig.tight_layout()
+#plt.show()
+fig.add_subplot(1, 4, 1)
+plt.imshow(frameBlured)
+plt.title("frameBlured")
+
+fig.add_subplot(1, 4, 2)
+plt.imshow(frameBlured)
+plt.title("frameBlured")
+
+fig.add_subplot(1, 4, 3)
+plt.imshow(frameBlured)
+plt.title("frameBlured")
+plt.show()
+
+
+images.append({"image":frameBlured, "title":'frameBlured'})
+images.append({"image":frameDenoised, "title":'frameDenoised'})

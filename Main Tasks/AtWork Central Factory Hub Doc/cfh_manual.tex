@@ -1,0 +1,237 @@
+\documentclass{article}
+
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{color}
+
+% define colors
+\definecolor{light-gray}{gray}{0.85}
+
+% source code
+\lstset{
+basicstyle=\footnotesize,
+frame=single,
+breaklines=true,
+backgroundcolor=\color{light-gray}
+}
+
+
+\title{RoCKIn@Work Central Factory Hub Manual}
+\author{Sven Schneider}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Introduction and motivation}
+
+\section{Setup and installation}
+\footnote{\url{https://github.com/rockin-robot-challenge/at_work_central_factory_hub}}
+
+\subsection{Prerequisites}
+
+\subsubsection{Arch Linux}
+\begin{enumerate}
+\item \ldots
+\end{enumerate}
+
+\subsubsection{Ubuntu 12.04}
+Install pre-built packages via the operating system's package manager:
+\begin{lstlisting}
+# add-apt-repository ppa:timn/clips
+# apt-get update
+$ apt-get install libmodbus-dev libclips-dev clips libclipsmm-dev protobuf-compiler libprotobuf-dev libprotoc-dev boost1.50-all-dev libglibmm-2.4-dev libgtkmm-3.0-dev libncursesw5-dev libyaml-cpp-dev libavahi-client-dev git
+# apt-get install libssl-dev libelf-dev mongodb-dev mongodb-clients mongodb libzmq3-dev
+\end{lstlisting}
+
+\subsubsection{Ubuntu 14.04}
+Install pre-built packages via the operating system's package manager:
+\begin{lstlisting}
+# apt-get install libmodbus-dev protobuf-compiler libprotobuf-dev libprotoc-dev libboost-all-dev libglibmm-2.4-dev libgtkmm-3.0-dev libncursesw5-dev libyaml-cpp-dev libavahi-client-dev git libxt-dev libxaw7-dev libncurses5-dev autoconf autogen libtool libyaml-dev
+# apt-get install libssl-dev libelf-dev mongodb-dev mongodb-clients mongodb libzmq3-dev
+\end{lstlisting}
+%
+Build and install CLIPS from source
+\begin{lstlisting}
+$ mkdir <workspace>
+$ cd <workspace>
+$ wget http://downloads.sourceforge.net/project/clipsmm/clips/6.30.0.20090722svn/clips-6.30.tar.gz
+$ tar -xf clips-6.30.tar.gz
+$ ./configure
+$ make
+# make install
+\end{lstlisting}
+%
+Build and install clipsmm from source
+\begin{lstlisting}
+$ wget http://downloads.sourceforge.net/project/clipsmm/clipsmm/clipsmm-0.3.4.tar.bz2
+$ tar -xf clipsmm-0.3.4..tar.bz2
+$ ./autogen.sh
+$ ./configure
+$ make
+# make install
+\end{lstlisting}
+
+\subsection{Building}
+\begin{lstlisting}
+$ git clone https://github.com/rockin-robot-challenge/at_work_central_factory_hub.git -b rockin
+$ make
+\end{lstlisting}
+%
+Some remarks and hints on the build process:
+\begin{itemize}
+  \item If you do not plan to use the real networked devices, you can ignore errors/warnings about missing ZMQ
+    dependencies (also make sure to disable the devices in the configuration).
+\end{itemize}
+
+\subsection{Configuration}
+The CFH offers a common file to store configuration parameters. This file is located at cfg/config.yaml. In the
+following the major configuration parameters are explained in specific scenarios.
+
+\subsubsection{Adding and enabling plugins (for networked devices)}
+A plugin mechanism enables the simple extension of the CFH. This mechanism is mainly used to integrate new networked
+devices into the CFH. Each plugin that should be loaded, must be added to the ``llsfrb$\rightarrow$plugins'' section in
+the cfg/config.yaml file. If supported by the plugin, further configuration parameters can be passed to a plugin.
+\noindent
+Such a plugin and it's configuration is shown in the following listing by using the RoCKIn conveyor belt as an example:
+\begin{lstlisting}
+llsfrb:
+  ...
+  plugins: "conveyor_belt"
+
+  conveyor_belt:
+    enable: true
+    host: !ipv4 192.168.1.101
+    status_port: !tcp-port 55501
+    command_port: !tcp-port 55502
+\end{lstlisting}
+
+\subsubsection{Running the CFH and robot on the same machine}
+If you want to execute the CFH and the robot on the same machine (here: localhost), make sure that in the
+cfg/config.yaml
+\begin{itemize}
+  \item the public peer's send port differs from the receieve port,
+  \item the team's private peer send port differs from the receive port; and
+  \item all the previous ports differ from each other.
+\end{itemize}
+The following listing shows an example of such a configuration:
+\begin{lstlisting}
+llsfrb:
+  ...
+  comm:
+    ...
+    public-peer:
+      host: !ipv4 127.0.0.1
+      send-port: !udp-port 4444
+      recv-port: !udp-port 4445
+    RoCKInNRoLLIn-peer:
+      host: !ipv4 127.0.0.1
+      send-port: !udp-port 4446
+      recv-port: !udp-port 4447
+\end{lstlisting}
+
+\subsubsection{Configuring streaming clients}
+In contrast to peers, there is only one TCP port defined for streaming client connections:
+llsfrb$\rightarrow$comm$\rightarrow$server-port. Also make sure that all clients use the right IP address and port for
+connecting to the CFH. This configuration is exemplified in the following:
+\begin{lstlisting}
+llsfrb:
+  ...
+  comm:
+    ...
+    server-port: !tcp-port 4444
+
+  shell:
+    refbox-host: !ipv4 127.0.0.1
+    refbox-port: 4444
+\end{lstlisting}
+
+\subsubsection{Updating the list of known teams}
+We assume that the name of the new team is RoCKInNRoLLIn. Three adaptions are required in the configuration file:
+\begin{enumerate}
+  \item Add a new peer communication end-point under llsfrb$\rightarrow$comm with the team name (note that the team
+  name is suffixed with ``-peer''), the peer's host and UDP port.
+  \item Add the team name to the array in llsfrb$\rightarrow$game$\rightarrow$teams.
+  \item Add a new crypto key for the team under llsfrb$\rightarrow$game$\rightarrow$crypto-keys (and also provide this 
+  key to the team, so that it can decipher the communication!) [Note: Although this is not used in RoCKIn, it should
+  still be provided!].
+\end{enumerate}
+To remove a team, simply delete these entries. An example configuration is similar to the following:
+\begin{lstlisting}
+llsfrb:
+  ...
+  comm:
+    ...
+    RoCKInNRoLLIn-peer:
+      host: !ipv4 192.168.1.255
+      port: !udp-port 4446
+
+  game:
+    teams: [RoCKInNRoLLIn]
+    RoCKInNRoLLIn: randomkey
+\end{lstlisting}
+
+\subsection{ROS environment}
+
+\section{Usage}
+After the CFH has been setup and configured, it can be executed via the following command:
+\begin{lstlisting}
+$ bin/llsf-refbox
+\end{lstlisting}
+Now, several tools are able to interact with the CFH:
+\begin{itemize}
+  \item The \textbf{rockin-controller} provides a graphical user interface (GUI) to control the execution of the
+    benchmark (e.g. benchmark selection, starting or stopping of a benchmark), but also control elements for the diverse
+    networked devices.
+  \item The \textbf{rockin-viewer} is a GUI that visualizes the current state of a benchmark and the testbed, including
+    the elapsed time, connected robots, and the status of the networked devices, inventory and orders.
+  \item The \textbf{rockin-fake-robot} is a command line example that emulates a robot and utilizes most of the CFH's
+    communication capabilities. The program takes exactly two arguements: the name of the robot to emulate and the name
+    of the team to which the robot belongs. This team name should be specified in the CFH's configuration file.
+  \item To select benchmarks and control their state, there is also a command-line tool available which is called
+    \textbf{rockin-benchmark-ctrl}. The program takes up to three arguments. Without arguments, it only shows the
+    current benchmark state. With the ``-p'' switch a specific benchmark can be selected (possible parameters: fbm1,
+    fbm2, tbm1, tbm2, tbm3, none). The ``-s'' switch forces a new benchmark state (possible parameters: init, running,
+    paused, finished), but is strongly disadvised, since it can bring the CFH into an inconsistent state. Instead a
+    transition request should be send to the CFH with the ``-e'' switch (possible parameters: reset, start, stop,
+    pause), which enables the CFH to only perform safe transitions.
+  \item Another command-line tool is the \textbf{rockin-device-ctrl} for controlling the networked devices. This program
+    takes exactly two arguments. The name of the device (possible values: drilling\_machine, conveyor\_belt) and the
+    command (possible values: up, down, start, stop).
+  \item Important information is sent out by the CFH to all listening controllers as attention messages. To show these
+    messages on the command line, use the \textbf{rockin-attention-msg-vis} program.
+\end{itemize}
+
+\section{Interfacing a robot with the CFH}
+
+\subsection{protobuf\_comm library -- Peers}
+
+\subsection{Message description}
+
+\section{Interfacing a controller or viewer with the CFH}
+
+\subsection{protobuf\_comm library -- Clients}
+
+\section{Interfacing a device with the CFH}
+
+\subsection{Plugins}
+Add plugins to the rockin/plugins folder.
+
+\subsection{Message description}
+Define device-specific messages (plugin $\leftrightarrow$ device communication) in the rockin/plugins/msgs folder.
+
+\section{CFH-Benchmark proxy}
+The CFH's communication infrastructure is based on protobuf\_comm (Boost ASIO and ProtoBuf), while the benchmarking
+system utilizes the Robot Operating System (ROS) for communication. The CFH-Benchmark proxy is an adapter to let these
+two systems communicate with each other to run and evaluate a benchmark.
+
+The proxy is contained in a ROS package \footnote{\url{https://github.com/rockin-robot-challenge/at_work_cfh_bm_proxy}}
+and can be build by following the instructions in the repository. To run the proxy, execute
+\begin{lstlisting}
+$ roslaunch at_work_cfh_bm_proxy proxy.launch
+\end{lstlisting}
+The node waits for the CFH and benchmarking system to become ready and does not required any further input.
+
+\section{References}
+
+\end{document}

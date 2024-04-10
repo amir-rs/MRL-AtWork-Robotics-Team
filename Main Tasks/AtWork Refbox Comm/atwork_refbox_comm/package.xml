@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <name>atwork_refbox_comm</name>
+  <version>0.0.1</version>
+  <description>ROS metapackage for communication with the RoboCup@Work Central Factory Hub.</description>
+
+  <maintainer email="alexander.moriarty@brsu.de">Alex Moriarty</maintainer>
+
+  <license>CPLv2</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

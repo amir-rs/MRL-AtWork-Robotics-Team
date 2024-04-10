@@ -1,0 +1,74 @@
+% !TEX root = ../Rulebook.tex
+\newpage
+\section{Basic Navigation Test}
+\label{sec:Basic Navigation Test}
+
+\paragraph{Purpose and Focus of the Test}
+The purpose of the \iaterm{Basic Navigation Test}{BNT} is to check whether the robots can navigate well in their environment, i.e. in a goal-oriented, autonomous, robust, and safe way.
+\par
+As the navigation problem is in the focus of robotics research for a long time and many approaches for solving it and its subtasks (like exploration, mapping, self-localization, path planning, motion control, and obstacle avoidance) exist, the focus of this test is to demonstrate that these approaches function properly on the robots used by the teams and in the environment defined by the test.
+\par
+
+\paragraph{Scenario Environment}
+The arena used for this test contains all elements that affect or support navigation: walls, service areas, places, arena objects, wall markers, and floor markers. In addition, obstacles may be placed in the environment.
+
+\paragraph{Manipulation Objects}
+This test does not include any objects for manipulation.
+\paragraph{Task}
+The robot will be sent a task specification, which is a string containing a series of triples, each of which specifies a place, an orientation, and pause duration. The robot has to move to the places specified in the task string, in the order as specified by the string, orient itself according to the orientation given, cover a place marker, pause its movement for the time in seconds as specified by the pause length, and finally leave the arena to reach the final position.
+
+The task specification consists of:
+
+\begin{itemize}
+	\item[--] A destination location, e.g. \texttt{WS01}, \texttt{SH02}, \texttt{CB03} or \texttt{WP12}
+	\item[--] An orientation (\texttt{N}, \texttt{S}, \texttt{W}, \texttt{E})
+	\item[--] A duration in seconds
+\end{itemize}
+
+The duration is always set to 3 seconds in order to make validation easier for the referees.
+%
+% \subsection{Complexity Options}
+%
+% \subsubsection{Obstacle complexity (pick one):}
+%
+% \begin{itemize}
+% 	\item Easy obstacles (bonus factor = +0.2): There are up to two obstacles in the arena.
+% 	\item Medium obstacles (bonus factor =  +0.4): There are up to three obstacles in the arena and the placement of the obstacles is harder.
+% \end{itemize}
+%
+%
+% \subsubsection{Barrier Tape complexity (bonus factor = +0.4):}
+% There are up to two barrier tape obstacles in the arena.
+%
+% \subsubsection{Navigation complexity (pick one):}
+%
+% \begin{itemize}
+% 	\item Easy navigation (bonus factor = + 0.0): The place marker has to be covered in such a way by the robot that at least a part of the black area covered
+% 	\item Medium navigation (bonus factor = + 0.1): The place marker has to be covered in such a way by the robot that at least a small part of the black area is covered the orientation must be correct, i.e. the robot must not deviate more than 45 deg.
+% 	\item Hard navigation (bonus factor = + 0.2): The place marker has to be fully covered by the robot the orientation must be correct, i.e. the robot must not deviate more than 45 deg.
+% \end{itemize}
+%
+%
+\paragraph{Rules}
+The following rules have to be obeyed:
+
+\begin{itemize}
+\item A single robot is used.
+\item The robot has to start from outside the arena, enter it through the arena entrance and leave through the exit.
+\item The order in which the teams have to perform will be determined by a draw.
+\item After the team's robot enters the arena, it must move to the places given in the task specification and assume the orientation specified after the place. The robot may reach a destination by choosing any path.
+\item The robot must visit the places in the order given by the task specification. It is possible to skip a place of the task specification and continue with the next one. In cases where the robot skipped one or multiple places there may be multiple possible matchings between places reached and places specified. In that case for calculating scores the matching is taken which leads to the highest score for the team.
+\item A destination is counted as reached when the robot covers the place marker for the number of seconds specified by the break and does not move (very small movement of the wheels is allowed). The orientation must not deviate more than 45 degrees.
+\item The run is over when the robot reached the final place or the designated time has expired.
+\end{itemize}
+%
+%
+%
+% \subsection{Scoring}
+%
+% \begin{itemize}
+% \item The team will receive 50 points for reaching a destination correctly (place and orientation) as given in the task specification and provided it stops for the time specified.
+% \item The team receives a penalty of –50 points each time the robot touches an obstacle, a wall, an arena object or a service area (i.e. any contact with the environment).
+% \item 50 points are awarded for completing the task specification completely correct, i.e. visiting all destinations from the task specification according to position and orientation (according to the chosen complexity level) and finally leaving the arena.
+% \item The reached points of a test will be multiplied with the complexity factor that belongs to the chosen complexity level.
+% \end{itemize}

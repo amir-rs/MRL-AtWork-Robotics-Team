@@ -1,0 +1,4 @@
+[submodule "at_work_central_factory_hub"]
+    path = atwork_refbox
+    url = https://github.com/industrial-robotics/atwork_central_factory_hub.git
+    branch = robocup-2016

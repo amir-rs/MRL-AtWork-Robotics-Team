@@ -1,0 +1,18 @@
+<package>
+  <description brief="randomGenerator_GUI">
+
+     randomGenerator_GUI
+
+  </description>
+  <author>Eduard</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/randomGenerator_GUI</url>
+  <depend package="qt_build"/>
+  <depend package="roscpp"/>
+
+  <rosdep name="libqt4-dev"/>
+  <depend package="qt_build"/>
+  <depend package="roscpp"/>
+  <depend package="randomGenerator"/>
+</package>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package>
+  <name>atwork_ros_msgs</name>
+  <version>0.1.0</version>
+  <description>
+    atwork_ros_msgs contains the ros message counter parts to the atwork_pb_msgs.
+    the atwork_pb_msgs are the official messages for communicating with the refbox.
+    This version of the atwork refbox is based on the RoCKIn@Work Central Factory Hub.
+  </description>
+  <maintainer email="alexander.moriarty@brsu.de">Alexander Moriarty</maintainer>
+  <license>GPLv3</license>
+
+  <url>http://robocupatwork.org/</url>
+  <author>Alexander Moriarty</author>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>atwork_pb_msgs</build_depend>
+  <build_depend>protobuf_comm</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>atwork_pb_msgs</run_depend>
+  <run_depend>protobuf_comm</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>message_runtime</run_depend>
+</package>

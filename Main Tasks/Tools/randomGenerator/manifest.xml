@@ -1,0 +1,21 @@
+<package>
+  <description brief="randomGenerator">
+
+     randomGenerator
+
+  </description>
+  <author>Eduard</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/randomGenerator</url>
+  <depend package="roslib"/>
+  <depend package="roscpp"/>
+  <depend package="std_msgs"/>
+
+  <export>
+    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lrandomGenerator"/>
+  </export>
+
+</package>
+
+

@@ -1,0 +1,170 @@
+% !TEX root = ../Rulebook.tex
+\label{sec:Tests}
+
+\section{General}
+
+\subsection{Common Rules}
+\label{ssec: Common Rules}
+
+
+Unless stated other, the following rules apply to all test types:
+
+\begin{itemize}
+\item The order in which the teams have to perform will be determined by a draw from the OC.
+\item The prep phase has a time limit of 3 minutes.
+\item Teams must not hardcode information gained from runs of previous teams. This is considered as cheating.
+\item A single robot is used.
+\item The robot must not leave the arena.
+\item Robots are allowed to carry three objects max. If more than 3 objects are above the robot's footprint, the same rule as for a major collision applies (run stopped or optional restart, stop after 2nd time). 
+\item The robot has to start and end at the respective arena location (START, FINISH).
+\item The robot will get the task specification from the AC or an official bagfile.
+\item Reaching each active Service Area successfully is rewarded once with points defined in table \ref{fig:test_scoring}.
+\item Service Areas count as succesfully reached as defined in section \ref{sec:ArenaDesign}.
+\item Manipulation tasks count as successful as defined in \ref{ssec:GraspingObjects} and \ref{ssec:PlacingObjects}.
+\item The score for each test will be calculated as defined in \ref{sec:ScoringAndRanking}.
+\item Exact test specifications are displayed in table \ref{fig:test_specifications_instance}.
+\end{itemize}
+
+
+%\end{itemize}
+
+
+
+%The actual competition contains of a set of so-called tests. 
+%A test is specified in terms of it's purpose and focus, environment features and eventually manipulation objects involved. Further, a concrete specification of the task is given and the rules to be obeyed. 
+
+%Each test has different variability dimensions. That is, which objects to be manipulated, how many locations to visit, from which height to grasp etc. The test instances for \YEAR are defined based on the general test description and can be seen in Section~\ref{sec:ScoringAndRanking}.
+
+
+
+
+%Every test has some navigation to a service area involved in it. Successful navigation will be awarded in every test according to Table \ref{tab:InstancePoints}. A navigation to a service area is successful when the robot reached the service area as defined in section \ref{ssec:Navigating}. The rewarded points for navigation to a servie area will be only awarded once per service area.
+
+\subsection{Grasping Objects} \label{ssec:GraspingObjects}
+
+\textbf{General}
+
+An Object counts as successfully grasped if the robot picks the correct Object type from the correct Service Area and carries it out of the Manipulation Zone, which is treated with imaginary boundaries of infinite height. 
+The object must be above the robot's footprint for a successful grasp.
+
+A robot is allowed to lift other Objects, as long as the Objects are not moved out of the Manipulation Zone with their complete form. 
+This enables a robot to pick and inspect all Objects on the workstation with its camera from multiple angles. 
+Removing an incorrect Object from the Manipulation zone is treated as an \texttt{Incorrect Object Manipulation}.
+
+An \textbf{Object Loss} occurs when the robot drops an Object to either the floor or from a height of $5\si{\centi\meter}$ above the Service Area. If any Object (starts rolling and) falls off the edge of a Service Area after it has been touched by the robot, it is also considered as an \texttt{Object Loss}. 
+
+The grasping process starts once the Manipulator enters the Manipulation Zone und ends when it leaves the Manipulation Zone.
+If the robot collides with an Object, Decoy or Container inside the Manipulation Zone during the grasping process it is considered as a \texttt{Manipulation Deduction}.
+
+To ensure objects are accessible on arbitrary surfaces, they must sink in no more than $\frac{1}{3}$ of their total height when placed on the surface. This means at least $\frac{2}{3}$  of the object's height must remain reachable from above without any obstructions by the arbitrary surface.
+
+
+\textbf{Rotating Table}
+
+It is explicitly NOT allowed to stop the table (e.g. by pushing the gripper into the table surface).
+
+It is also explicitly NOT allowed to position the gripper in a way that blocks the objects 
+unless it is during the grasping process of a target object and does not affect the table rotation or other objects.
+
+A breach of one or both of these rules causes that no points are rewarded if the Object is successfully picked.
+
+\subsection{Placing Objects} \label{ssec:PlacingObjects}
+
+\textbf{General}
+
+An Object counts as successfully placed if the robot places the correct Object type inside of the Manipulation Zone of the correct Service Area. The orientation of the object may be chosen freely by the robot, but the Object's footprint must lie completely inside of the Manipulation Zone.
+Neither the placed object nor the robot are allowed to touch other Objects or Containers on the Service Area.
+Breaches of these rules result in a \texttt{Manipulation Deduction}, which will only be applied once, independent of the actual amount of breaches, but for each grasping or placing.
+
+If a placed Object either has an incorrect type or if it has been placed on the wrong Service Area, 
+the placement is considered as an \texttt{Incorrect Object Manipulation}. 
+Objects dropped from a height of $5\si{\centi\meter}$ or more above the Service Area are not counted as successfully placed but are rather treated as an \texttt{Object Loss}. This requires robots to carefully handle Objects as some might be damaged otherwise.
+
+
+\textbf{Shelf}
+
+Objects must be placed on the upper part of the Shelf.
+The Manipulation Zone also applies for the tilted surface, but is extended until the edge of the Shelf to allow for Objects to slide down after a successful placement. Objects sliding onto other previously placed Objects cause a \texttt{Manipulation Deduction}.
+
+
+\textbf{Precision Placement}
+
+Objects must be placed onto the matching cavity tile with their complete form, which is then rewarded with a \texttt{Cavity Placement}.
+If the object drops through the cavity and fully passes the cavity tile, the precision placement is considered as successful and is rewarded with an additional \texttt{Precision Placement}. 
+
+It is allowed to perform form fitting strategies, such as wiggling the object after placement or using force sensors during manipulation,
+as long as the cavity tile is not damaged during that process. A damaged cavity is treated as a \texttt{Incorrect Object Manipulation} and no points will be rewarded.
+
+Objects placed on a mismatching cavity tile do not cause an \texttt{Incorrect Object Manipulation} penalty if they had to be precise placed in the first place. This relaxes the risk of performing this task as it reduces potential bad outcome from false cavity detections.
+ 
+
+\textbf{Container Placement}
+
+Container placements are considered as successful if an Object is placed inside of the container from a height less than $5\si{\centi\meter}$ above it's inside bottom. With container edges taller than $5\si{\centi\meter}$, robots must therefore "insert" their gripper fingers into the container during manipulation. Touching the container while placing the object is allowed, as long as the container is not moved substantially.
+If the container moves more than $1\si{\centi\meter}$, is tilted or forcefully moved, a \texttt{Manipulation Deduction} penalty will be applied.
+
+Placed Objects must touch the inside bottom of the container to count as successfully placed.
+Figure \ref{fig:example_allenkeyOK} shows correct final object positions placement examples. 
+
+\begin{figure}[h!]
+	\begin{center}
+		\subfloat{\includegraphics[width=0.24\textwidth,rotate=-0]{./images/placement_examples/allenkey_ok1.jpg}} \hfill
+		\subfloat{\includegraphics[width=0.24\textwidth,rotate=-0]{./images/placement_examples/allenkey_ok2.jpg}} \hfill
+		\subfloat{\includegraphics[width=0.24\textwidth,rotate=-0]{./images/placement_examples/drill_ok1.jpg}} \hfill
+		\subfloat{\includegraphics[width=0.24\textwidth,rotate=-0]{./images/placement_examples/drill_ok2.jpg}} \hfill
+	\end{center}
+	\caption{Examples of correct AllenKey and Drill in container placement.}
+	\label{fig:example_allenkeyOK}
+\end{figure}
+
+Figure \ref{fig:example_allenkeyNOTOK} shows examples for incorrect placements, which cause a \texttt{Manipulation Deduction} and the bonus points for that container placement NOT being given. In this case, the placement is considered as a normal placement with all associated rules. 
+
+\begin{figure}[h!]
+	\begin{center}
+		\subfloat{\includegraphics[width=0.24\textwidth,rotate=-0]{./images/placement_examples/allenkey_not_ok1.jpg}} \hfill
+		\subfloat{\includegraphics[width=0.24\textwidth,rotate=-0]{./images/placement_examples/allenkey_not_ok4.jpg}} \hfill
+		\subfloat{\includegraphics[width=0.24\textwidth,rotate=-0]{./images/placement_examples/drill_not_ok2.jpg}} \hfill
+		\subfloat{\includegraphics[width=0.24\textwidth,rotate=-0]{./images/placement_examples/drill_not_ok4.jpg}} \hfill	
+\end{center}
+	\caption{Examples of incorrect AllenKey and Drill  in container placement.}
+	\label{fig:example_allenkeyNOTOK}
+\end{figure}
+
+If more than one object must be placed inside the same container, those objects are allowed to touch. 
+The placement of the second object is also considered successful if the object does not touch the container bottom, 
+if it is blocked by the first object (e.g. two large aluminum profiles into the same container) and its final position complies with the examples shown in fig. \ref{fig:example_allenkeyOK} without causing the mistakes shown in fig. \ref{fig:example_allenkeyNOTOK}.
+
+
+\newpage
+%\input{./tests/BNT}
+
+\input{./tests/New_Test_Structure}
+
+\input{./tests/BMT}
+
+\input{./tests/BTT}
+
+\input{./tests/ATT}
+
+%\input{./tests/PPT}
+
+%\input{./tests/RTT}
+
+\input{./tests/Final.tex}
+
+\input{./tests/Specs}
+
+%\newpage
+%\section{Test Variability} \label{sec:TestVariability}
+
+%The different optional parameters and configurations for each task are 
+%mentioned in Section~\ref{sec:ArenaDesign} and \ref{sec:ManipulationTasks}. 
+%Figure~\ref{fig:complexityTree} summarizes the possible variations and 
+%emphasizes aspects that may be chosen.
+
+%\begin{figure}[ht]
+%\centering
+%\input{./tikz/complexityTree.tikz}
+%\caption{Aspects of variability that may be integrated in a specific instance of a test.}
+%\label{fig:complexityTree}
+%\end{figure}

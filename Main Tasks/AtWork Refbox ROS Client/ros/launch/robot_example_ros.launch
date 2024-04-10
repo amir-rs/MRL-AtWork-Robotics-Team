@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="atwork_refbox_ros_client" type="robot_example_ros"
+          name="robot_example_ros" output="screen">
+
+        <param name="remote_refbox" type="bool" value="false"/>
+        <param name="host_name" type="string" value="localhost"/>
+
+        <!-- refree box port when it is running on remote machine as client -->
+        <param name="public_port" type="int" value="4444"/>
+
+        <!-- refree box ports when it is running on same machine as client -->
+        <param name="refbox_send_port" type="int" value="4444"/>
+        <param name="refbox_recv_port" type="int" value="4445"/>
+
+        <!-- client/team port when refbox is running on remote machine -->
+        <param name="team_port" type="int" value="4446"/>
+
+        <!-- client/team port when refbox is running on same machine -->
+        <param name="team_recv_port" type="int" value="4446"/>
+        <param name="team_send_port" type="int" value="4447"/>
+
+        <!-- robot name -->
+        <param name="robot_name" type="string" value="rip-yb-5"/>
+
+        <!-- team name specified in refbox configuration --> 
+        <param name="team_name" type="string" value="b-it-bots"/>
+    </node>
+</launch>
+

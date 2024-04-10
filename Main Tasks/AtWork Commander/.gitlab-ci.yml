@@ -1,0 +1,88 @@
+.default: &default_config
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: on_success 
+    - if: $CI_PIPELINE_SOURCE != "push"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "testing"
+      allow_failure: true
+      when: on_success
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: on_success
+    
+
+  cache:
+    key: apptainer
+    paths:
+      - robotto_setup/ros-noetic-robotto.sif
+    policy: pull
+
+stages:
+  - apptainer
+  - setup
+  - build
+  - test
+
+get-apptainer:
+  stage: setup
+
+  <<: *default_config
+
+  cache:
+    policy: push
+
+  script:
+    - git clone --depth 1 git@gitlab.robotto.cs.ovgu.de:robotto/robotto_setup.git
+
+setup-workspace:
+  stage: setup
+
+  <<: *default_config
+
+  script:
+    - mkdir -p workspace/src
+    - cd workspace/src
+    - ln -s ../../atwork_* .
+    - cd ..
+    - echo "#!/bin/bash" > run
+    - echo "cd workspace" >> run
+    - echo "source /opt/ros/noetic/setup.bash" >> run
+    - echo "source devel/setup.bash" >> run
+    - echo "catkin \$@" >> run
+    - chmod 0755 run
+
+  artifacts:
+    paths:
+      - workspace
+
+build-atwork_commander:
+  stage: build
+
+  <<: *default_config
+
+  script:
+    - apptainer exec robotto_setup/ros-noetic-robotto.sif ./workspace/run build
+
+  artifacts:
+    paths:
+      - workspace
+
+  dependencies:
+    - setup-workspace
+    - get-apptainer
+
+test-atwork_commander:
+  stage: test
+
+  <<: *default_config
+
+  script:
+    - apptainer exec robotto_setup/ros-noetic-robotto.sif ./workspace/run test
+
+  artifacts:
+    paths:
+      - workspace/logs
+  
+  dependencies:
+    - build-atwork_commander
+    - get-apptainer

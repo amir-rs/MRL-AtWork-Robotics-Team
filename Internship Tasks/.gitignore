@@ -1,0 +1,20 @@
+.venv
+ImageDataset*
+/dataset/*
+test_images*
+__pycache__
+#*.jpg
+*.avi
+*.vscode
+<<<<<<< HEAD
+.ipynb_checkpoints
+*.zip
+logs
+saved_model
+=======
+*.zip
+PPT/bbox_classification/logs/*
+PPT/logs/*
+PPT/PPT_bbox_classifier/saved_model
+.ipynb_checkpoints
+>>>>>>> PPT_new_process

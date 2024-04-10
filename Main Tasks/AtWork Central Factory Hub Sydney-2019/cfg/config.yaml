@@ -1,0 +1,146 @@
+%YAML 1.2
+---
+# Main configuration document
+
+llsfrb:
+  plugins: "conveyor_belt"
+
+  log:
+    level: info
+    general: refbox.log
+    clips: clips.log
+    game: game.log
+
+  conveyor-belt:
+    enable: false
+    host: !ipv4 127.0.0.1
+    camera_status_port: !tcp-port 55521
+    conveyor_status_port: !tcp-port 55522
+    command_port: !tcp-port 55523
+
+  clips:
+    dir: "@BASEDIR@/atwork/clips"
+    # Timer interval, in milliseconds
+    timer-interval: 40
+
+    main: refbox
+    debug: true
+    # debug levels: 0 ~ none, 1 ~ minimal, 2 ~ more, 3 ~ maximum
+    debug-level: 2
+    unwatch-facts: [time, signal]
+    unwatch-rules: [retract-time,
+                    net-send-beacon, net-send-BenchmarkState,
+                    net-send-TaskInfo-peer, net-send-TaskInfo-client,
+                    net-send-Inventory-peer, net-send-Inventory-client,
+                    net-send-VersionInfo, net-send-ConveyorBeltStatus]
+
+  comm:
+    protobuf-dirs: ["@BASEDIR@/atwork/msgs"]
+
+    server-port: !tcp-port 5444
+
+    public-peer:
+      host: !ipv4 192.168.1.255
+      #port: !udp-port 5444
+      send-port: !udp-port 5444
+      recv-port: !udp-port 5445
+
+    b-it-bots-peer:
+      host: !ipv4 192.168.1.255
+      port: !udp-port 5446
+      #send-port: !udp-port 5446
+      #recv-port: !udp-port 5447
+
+    smARTLab-peer:
+      host: !ipv4 192.168.255.255
+      port: !udp-port 5448
+      #send-port: !udp-port 5448
+      #recv-port: !udp-port 5449
+
+    SPQR-peer:
+      host: !ipv4 192.168.255.255
+      port: !udp-port 5450
+      #send-port: !udp-port 5450
+      #recv-port: !udp-port 5451
+
+    V-Climber-peer:
+      host: !ipv4 192.168.255.255
+      port: !udp-port 5452
+      #send-port: !udp-port 5452
+      #recv-port: !udp-port 5453
+
+    LUHbots-peer:
+      host: !ipv4 192.168.255.255
+      port: !udp-port 5454
+      #send-port: !udp-port 5454
+      #recv-port: !udp-port 5455
+
+    WF-Wolves-peer:
+      host: !ipv4 192.168.255.255
+      port: !udp-port 5456
+      #send-port: !udp-port 5456
+      #recv-port: !udp-port 5457
+
+    AutonOHM-peer:
+      host: !ipv4 192.168.255.255
+      port: !udp-port 5458
+      #send-port: !udp-port 5458
+      #recv-port: !udp-port 5459
+
+    RobOTTO-peer:
+      host: !ipv4 192.168.255.255
+      port: !udp-port 5460
+      #send-port: !udp-port 5460
+      #recv-port: !udp-port 5461
+
+    MRL-peer:
+      host: !ipv4 192.168.255.255
+      port: !udp-port 5462
+      #send-port: !udp-port 5462
+      #recv-port: !udp-port 5463
+
+    AMSTT-peer:
+      host: !ipv4 192.168.255.255
+      port: !udp-port 5464
+      #send-port: !udp-port 5464
+      #recv-port: !udp-port 5465
+
+    Robo-Erectus-peer:
+      host: !ipv4 192.168.255.255
+      port: !udp-port 5466
+      #send-port: !udp-port 5466
+      #recv-port: !udp-port 5467
+
+    Fontys-peer:
+      host: !ipv4 192.168.255.255
+      port: !udp-port 5468
+      #send-port: !udp-port 5468
+      #recv-port: !udp-port 5469
+
+  mongodb:
+    enable: false 
+    hostport: localhost
+    collections:
+      text-log: llsfrb.log
+      clips-log: llsfrb.clipslog
+      protobuf: llsfrb.protobuf
+
+  game:
+    teams: [b-it-bots, smARTLab, SPQR, V-Climber, LUHbots, WF-Wolves, AutonOHM, RobOTTO, MRL, AMSTT, Robo-Erectus, Fontys]
+    crypto-keys:
+      b-it-bots: randomkey
+      smARTLab: randomkey
+      SPQR: randomkey
+      V-Climber: randomkey
+      LUHbots: randomkey
+      WF-Wolves: randomkey
+      AutonOHM: randomkey
+      RobOTTO: randomkey
+      MRL: randomkey
+      AMSTT: randomkey
+      Robo-Erectus: randomkey
+      Fontys: randomkey
+
+  shell:
+    refbox-host: !ipv4 localhost
+    refbox-port: 5444
